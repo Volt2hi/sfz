@@ -1,0 +1,1064 @@
+
+                        <!DOCTYPE html>
+                        <html lang="en">
+                        <head>
+                            <meta charset="UTF-8">
+                            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+							<style>
+								body {
+									background-color: white; /* Ensure the iframe has a white background */
+								}
+
+								
+							</style>
+                        </head>
+                        <body>
+                            <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SCG Painting Spec - SP Codes Explained</title>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Sarabun', sans-serif; background: #f0f2f5; padding: 20px; }
+        .container { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: 480px 1fr; gap: 20px; }
+        .panel { background: white; border-radius: 12px; padding: 25px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+        .header { grid-column: 1 / -1; text-align: center; margin-bottom: 10px; }
+        .section-title { font-weight: 700; color: #1e3c72; margin-bottom: 15px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: 600; font-size: 14px; }
+        input, select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; font-family: inherit; }
+        .temp-available { background: #e7f5e7 !important; font-weight: bold; color: #0d5c0d; }
+        .temp-unavailable { background: #f5f5f5 !important; color: #999; font-style: italic; }
+        .radio-group { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        .radio-option { border: 1px solid #ccc; border-radius: 6px; padding: 10px; text-align: center; cursor: pointer; transition: 0.2s; font-size: 14px; }
+        .radio-option.selected { background: #1e3c72; color: white; border-color: #1e3c72; }
+        .radio-option input { display: none; }
+        .form-preview { background: #fafafa; border: 1px solid #ddd; padding: 40px; min-height: 800px; font-size: 12px; }
+        .preview-header { text-align: center; border-bottom: 2px solid #000; margin-bottom: 20px; padding-bottom: 10px; }
+        .row { display: flex; margin-bottom: 10px; }
+        .col { flex: 1; display: flex; border-bottom: 1px solid #eee; padding: 5px 0; }
+        .label { font-weight: bold; width: 140px; }
+        .value { flex: 1; }
+        .spec-box { border: 1px solid #ddd; margin: 10px 0; padding: 10px; background: white; }
+        .box-title { font-weight: bold; background: #f0f0f0; padding: 5px; margin: -10px -10px 10px -10px; border-bottom: 1px solid #ddd; }
+        .item-row { margin-bottom: 5px; padding-left: 10px; border-left: 3px solid #1e3c72; }
+        .note-box { background: #fff3cd; border-left: 4px solid #ffc107; }
+        .note-box .box-title { background: #ffeaa7; }
+        .critical-note { background: #f8d7da; border-left: 4px solid #dc3545; }
+        .critical-note .box-title { background: #f5c6cb; }
+        .info-note { background: #d1ecf1; border-left: 4px solid #17a2b8; }
+        .info-note .box-title { background: #bee5eb; }
+        .color-box { background: #e7f5e7; border-left: 4px solid #28a745; }
+        .color-box .box-title { background: #c3e6cb; }
+        .sp-code-box { background: #e8f4fd; border-left: 4px solid #007bff; }
+        .sp-code-box .box-title { background: #d1ecf1; }
+        .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: bold; color: white; margin-right: 5px; }
+        .badge-new { background: #28a745; }
+        .badge-repair { background: #dc3545; }
+        .color-swatch { display: inline-block; width: 20px; height: 20px; border-radius: 3px; margin-right: 8px; vertical-align: middle; border: 1px solid #ccc; }
+        .btn-print { width: 100%; padding: 15px; background: #1e3c72; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+        .btn-print:disabled { background: #ccc; cursor: not-allowed; }
+        .temp-note { font-size: 11px; color: #666; margin-top: 5px; font-style: italic; }
+        .pdf-lang-group { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 10px 0; }
+        .lang-option { border: 1px solid #ccc; border-radius: 6px; padding: 8px; text-align: center; cursor: pointer; transition: 0.2s; font-size: 12px; }
+        .lang-option.selected { background: #28a745; color: white; border-color: #28a745; }
+        .pdf-divider { margin: 15px 0; text-align: center; color: #666; font-size: 12px; }
+        .pdf-content {
+            position: absolute;
+            left: -9999px;
+            width: 210mm;
+            background: white;
+            padding: 20mm; /* 2 ซม. = 20mm */
+            font-family: 'Sarabun', sans-serif;
+            font-size: 14px;
+            line-height: 1.4;
+            box-sizing: border-box;
+        }
+        .pdf-content h1 { font-size: 18px; font-weight: bold; text-align: center; margin-bottom: 10px; }
+        .pdf-content h2 { font-size: 16px; font-weight: bold; text-align: center; margin-bottom: 15px; }
+        .pdf-content h3 { font-size: 14px; font-weight: bold; margin: 15px 0 8px 0; }
+        .pdf-content p { margin: 5px 0; }
+        .pdf-content .section { margin: 15px 0; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 style="color: #1e3c72;">SCG Chemicals Painting Specification</h1>
+            <p>SP Codes Explained | PED-CM-ES-0010</p>
+        </div>
+        <div class="panel">
+            <div class="section-title">Configuration</div>
+            <div class="form-group">
+                <label>Project Name</label>
+                <input type="text" id="project" placeholder="Enter Project Name..." oninput="update()">
+            </div>
+            <div class="form-group">
+                <label>Equipment or Material</label>
+                <select id="eq_type" onchange="updateTemperatureOptions()">
+                    <option value="">Select equipment type...</option>
+                    <optgroup label="Steel Structures">
+                        <option value="1">All steel structures incl. pipe racks brackets of equipment, etc</option>
+                        <option value="2">All steel skirts, saddles structures supports, etc</option>
+                        <option value="13">Top and bottom surfaces of column, platforms, checkered plate</option>
+                    </optgroup>
+                    <optgroup label="Equipment & Vessels">
+                        <option value="3">Equipment and vessels, heat exchangers, and columns, etc</option>
+                        <option value="4">Furnaces, chimneys, flue gas ducts, equipment and vessels</option>
+                        <option value="5">Equipment and vessels per No.3 (High Temperature)</option>
+                        <option value="10">Outside surface of storage tanks and spheres</option>
+                        <option value="19">Tank with cold insulation</option>
+                    </optgroup>
+                    <optgroup label="Piping Systems">
+                        <option value="6">Pipes, fittings, flanges</option>
+                        <option value="7">Pipe in trenches</option>
+                        <option value="8">Control Valves, Valves</option>
+                        <option value="17">All equipment, Piping components, flanges, support, etc (Cold)</option>
+                        <option value="18">Piping components, flanges, support, etc (Insulated)</option>
+                    </optgroup>
+                    <optgroup label="Rotating Equipment">
+                        <option value="9">All rotating machines (pumps, motors, compressors) and switch boards</option>
+                        <option value="16">Pumps, motors, compressors (Insulated)</option>
+                    </optgroup>
+                    <optgroup label="Storage & Special Conditions">
+                        <option value="11">Inside surface of tank basins up to 1m height including basin floor</option>
+                        <option value="12">Inside surface of storage basins</option>
+                        <option value="14">Equipment subject to chemical storage inside or outside loading facilities</option>
+                        <option value="15">Equipment subject to immersion in water or continuous wetness of steel surfaces</option>
+                        <option value="20">All equipment and piping in cyclic temperature condition</option>
+                        <option value="21">All stainless steel equipment structure and piping</option>
+                    </optgroup>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Operating Temperature (°C)</label>
+                <select id="temp" onchange="update()">
+                    <option value="0-80">0 to 80°C</option>
+                    <option value="81-120">81 to 120°C</option>
+                    <option value="81-200">81 to 200°C</option>
+                    <option value="201-400">201 to 400°C</option>
+                    <option value="401-500">401 to 500°C</option>
+                    <option value="-70-500">-70 to 500°C</option>
+                    <option value="-190-0">-190 to 0°C</option>
+                    <option value="-196-650">-196 to 650°C (Cyclic)</option>
+                    <option value="-196-205">-196 to 205°C (Stainless)</option>
+                    <option value="0-500">0 to 500°C (Valves/Machines)</option>
+                    <option value="0-120">0 to 120°C (Special)</option>
+                    <option value="Special">Special Conditions</option>
+                </select>
+                <div class="temp-note">✅ Available temperatures are highlighted in green</div>
+            </div>
+            <div class="form-group">
+                <label>Surface Status</label>
+                <div class="radio-group">
+                    <div class="radio-option" data-grp="ins" data-val="non">Non-Insulated</div>
+                    <div class="radio-option" data-grp="ins" data-val="ins">Insulated</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Application Type</label>
+                <div class="radio-group">
+                    <div class="radio-option" data-grp="app" data-val="new">New Construction</div>
+                    <div class="radio-option" data-grp="app" data-val="repair">Repair Work</div>
+                </div>
+            </div>
+            <div class="pdf-divider">── PDF Export Options ──</div>
+            <div class="form-group">
+                <label>PDF Language | ภาษา PDF</label>
+                <div class="pdf-lang-group">
+                    <div class="lang-option selected" data-lang="en">🇺🇸 English</div>
+                    <div class="lang-option" data-lang="th">🇹🇭 ภาษาไทย</div>
+                </div>
+            </div>
+            <button class="btn-print" id="btn" onclick="printPDF()" disabled>📄 Generate Professional PDF Report</button>
+        </div>
+        <div class="panel">
+            <div class="section-title">Live Preview (Engineering Specification CM-0010)</div>
+            <div class="form-preview" id="preview">
+                <div style="text-align: center; color: #999; padding: 50px;">
+                    Please select equipment type and fill project name to generate specification
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Hidden PDF Content for Thai rendering -->
+    <div id="pdf-content" class="pdf-content"></div>
+    <script>
+        const EQ_MAP = {
+            "1": { name: "All steel structures incl. pipe racks brackets of equipment, etc", temps: ["0-80"], notesRef: [], remarksRef: [], colorRef: "structures" },
+            "2": { name: "All steel skirts, saddles structures supports, etc", temps: ["81-200"], notesRef: ["2","3"], remarksRef: ["skirts_ladders"], colorRef: "structures" },
+            "3": { name: "Equipment and vessels, heat exchangers, and columns, etc", temps: ["0-80"], notesRef: ["3","4"], remarksRef: [], colorRef: "equipment" },
+            "4": { name: "Furnaces, chimneys, flue gas ducts, equipment and vessels", temps: ["81-200"], notesRef: [], remarksRef: ["skirts_ladders"], colorRef: "equipment" },
+            "5": { name: "Equipment and vessels per No.3 (High Temperature)", temps: ["201-400", "401-500"], notesRef: [], remarksRef: ["skirts_ladders"], colorRef: "equipment" },
+            "6": { name: "Pipes, fittings, flanges", temps: ["0-80", "81-200", "201-400", "401-500"], notesRef: ["1","2"], remarksRef: [], colorRef: "piping" },
+            "7": { name: "Pipe in trenches", temps: ["0-120"], notesRef: [], remarksRef: [], colorRef: "piping" },
+            "8": { name: "Control Valves, Valves", temps: ["0-500"], notesRef: [], remarksRef: ["manufacturer_standard"], colorRef: "valves" },
+            "9": { name: "All rotating machines (pumps, motors, compressors) and switch boards", temps: ["0-500"], notesRef: [], remarksRef: ["manufacturer_standard"], colorRef: "machinery" },
+            "10": { name: "Outside surface of storage tanks and spheres", temps: ["0-80"], notesRef: [], remarksRef: [], colorRef: "tanks" },
+            "11": { name: "Inside surface of tank basins up to 1m height including basin floor", temps: ["0-120"], notesRef: [], remarksRef: ["basin_height"], colorRef: "special" },
+            "12": { name: "Inside surface of storage basins", temps: ["Special"], notesRef: [], remarksRef: ["basin_certificate"], colorRef: "special" },
+            "13": { name: "Top and bottom surfaces of column, platforms, checkered plate", temps: ["0-120"], notesRef: ["1","2"], remarksRef: [], colorRef: "equipment" },
+            "14": { name: "Equipment subject to chemical storage inside or outside loading facilities", temps: ["0-120"], notesRef: [], remarksRef: [], colorRef: "special" },
+            "15": { name: "Equipment subject to immersion in water or continuous wetness of steel surfaces", temps: ["0-120"], notesRef: [], remarksRef: [], colorRef: "special" },
+            "16": { name: "Pumps, motors, compressors (Insulated)", temps: ["-70-500"], notesRef: [], remarksRef: ["manufacturer_standard"], colorRef: "machinery" },
+            "17": { name: "All equipment, Piping components, flanges, support, etc (Cold)", temps: ["-190-0"], notesRef: ["1"], remarksRef: [], colorRef: "piping" },
+            "18": { name: "Piping components, flanges, support, etc (Insulated)", temps: ["0-80", "81-200", "201-400", "401-500"], notesRef: ["1"], remarksRef: [], colorRef: "piping" },
+            "19": { name: "Tank with cold insulation", temps: ["Special"], notesRef: [], remarksRef: ["attachment"], colorRef: "special" },
+            "20": { name: "All equipment and piping in cyclic temperature condition", temps: ["-196-650"], notesRef: ["1"], remarksRef: [], colorRef: "equipment" },
+            "21": { name: "All stainless steel equipment structure and piping", temps: ["-196-205"], notesRef: ["4"], remarksRef: [], colorRef: "equipment" }
+        };
+        const NOTES = {
+            "non-insulated": {
+                "1": "In case of field fabrication, all painting work shall be doneat field. Samd blast and primer shall be finished before field fabrication.",
+                "2": "All painting (I, II, III and IV) for piping furnished on equipment package shall be finished form the manufacturer.",
+                "3": "Equipment shall mean drun, tower and other static equipment.",
+                "4": "Chute and duct shall be included in pipe."
+            },
+            "insulated": {
+                "1": "In case of field fabrication, all painting work shell be done at field. Sand blast and primer shall be finished field fabrication",
+                "2": "Equipment shall mean drum, tower, hooper, and other static equipment3) Shutting and duct shall be include in pipe",
+                "3": "Stainless steel with insulation shall be painted"
+            }
+        };
+        const REMARKS = {
+            "skirts_ladders": "Skirts, saddles and brackets, ladders and platform to be painted No : 1 or No : 2",
+            "manufacturer_standard": "Painting with consideration of design temperature per manufacture's standard final top coat color per section 7",
+            "basin_height": "Over 1 m as per cons No.12",
+            "basin_certificate": "To be determined individually with respect to the service Manufacturer of the coating must produce a certificate of appliccability",
+            "attachment": "Refer attachment"
+        };
+        const COLOR_CODES = {
+            "structures": [
+                { item: "Building, pipe rack", color: "RAL 6010 (Green)", swatch: "#4d7c2b" },
+                { item: "Hand rails, railings, Protection cages", color: "RAL 1021 (Yellow)", swatch: "#f7c41f" },
+                { item: "Stairs/walk way", color: "RAL 6010 (Green)", swatch: "#4d7c2b" },
+                { item: "Ladder rungs", color: "RAL 1021 (Yellow)", swatch: "#f7c41f" }
+            ],
+            "equipment": [
+                { item: "Equipment", color: "RAL 7023 (Gray)", swatch: "#818479" },
+                { item: "Vessel", color: "RAL 7023 (Gray)", swatch: "#818479" },
+                { item: "Outdoor Tank", color: "RAL 9002 (White)", swatch: "#e9e5da" },
+                { item: "Refrigeration system", color: "RAL 7023 (Gray)", swatch: "#818479" }
+            ],
+            "machinery": [
+                { item: "Pump", color: "RAL 7001 (Silver Gray)", swatch: "#8693a4" },
+                { item: "Compressor", color: "RAL 7001 (Silver Gray)", swatch: "#8693a4" },
+                { item: "Crane, lifting", color: "RAL 1012 (Yellow)", swatch: "#d9c022" },
+                { item: "Coupling guard", color: "RAL 2000 (Orange)", swatch: "#d93c00" },
+                { item: "Motor", color: "RAL 7030 (Stone Gray)", swatch: "#909388" },
+                { item: "Blower, Fan", color: "RAL 7001 (Silver Gray)", swatch: "#8693a4" },
+                { item: "Steam turbine", color: "RAL 7001 (Silver Gray)", swatch: "#8693a4" },
+                { item: "Agitator", color: "RAL 7001 (Silver Gray)", swatch: "#8693a4" }
+            ],
+            "piping": [
+                { item: "Indoor piping", color: "RAL 7032 (Gray)", swatch: "#b5b8b1" },
+                { item: "Outdoor piping", color: "RAL 7032 (Gray)", swatch: "#b5b8b1" },
+                { item: "Fire-fighting systems/piping", color: "RAL 3000 (Red)", swatch: "#b32821" },
+                { item: "Valves", color: "RAL 9006 (White Aluminum)", swatch: "#a0a0a0" }
+            ],
+            "valves": [
+                { item: "Valves", color: "RAL 9006 (White Aluminum)", swatch: "#a0a0a0" },
+                { item: "Hand wheels CSO, LO Type", color: "RAL 6018 (Green)", swatch: "#3e7a2d" },
+                { item: "Hand wheels CSC, LC Type", color: "RAL 3017 (Red)", swatch: "#d3545f" },
+                { item: "Hand wheels Other Type", color: "RAL 9005 (Black)", swatch: "#0e0e10" }
+            ],
+            "tanks": [
+                { item: "Outdoor Tank", color: "RAL 9002 (White)", swatch: "#e9e5da" }
+            ],
+            "instrumentation": [
+                { item: "Instrument panels", color: "RAL 7032 (Gray)", swatch: "#b5b8b1" },
+                { item: "Control cabinets, switch gear", color: "RAL 7032 (Gray)", swatch: "#b5b8b1" },
+                { item: "Support", color: "RAL 6011 (Green)", swatch: "#19381f" },
+                { item: "Cable racks", color: "RAL 7032 (Gray)", swatch: "#b5b8b1" }
+            ],
+            "special": [
+                { item: "As specified per design requirements", color: "Refer to specification", swatch: "#999" }
+            ]
+        };
+        // SP Codes with detailed descriptions
+        const SP_CODES = {
+            "SP-1": "Solvent cleaning - Remove oil, grease, and contaminants using solvents",
+            "SP-2": "Hand tool cleaning - Remove loose rust, mill scale, and paint with hand tools",
+            "SP-3": "Power tool cleaning - Remove loose rust, mill scale, and paint with power tools",
+            "SP-5": "White metal blast cleaning (NACE #1, Sa.3) - Complete removal of all visible rust, mill scale, paint, and foreign matter",
+            "SP-6": "Commercial blast cleaning (NACE #3, Sa.2) - Remove all oil, grease, dirt, rust scale, and foreign matter except for slight shadows",
+            "SP-7": "Brush-off blast cleaning (NACE #4, Sa.1) - Remove loose mill scale, rust, and foreign matter",
+            "SP-8": "Pickling - Chemical removal of mill scale and rust using acids",
+            "SP-10": "Near-white blast cleaning (NACE #5, Sa.2½) - Remove nearly all mill scale, rust, paint, and foreign matter",
+            "SP-16": "Brush-off blast cleaning of non-ferrous metal/Sweep blast - Light cleaning for stainless steel and non-ferrous metals"
+        };
+        const SYS_DATA = {
+            "A": {
+                sys: "A", dft: "240", p: "SP-10",
+                l1: "Organic Zinc-Rich (75µm)", l2: "Epoxy (125µm)", l3: "Polyurethane (50µm)",
+                col: "Color per Section 7", note: "Standard Steel Protection (0-80°C)",
+                systemNotes: []
+            },
+            "B": {
+                sys: "B", dft: "155", p: "SP-10",
+                l1: "Organic Zinc-Rich (75µm)", l2: "Silicone Acrylic (40µm)", l3: "Silicone Acrylic (40µm)",
+                col: "Aluminum", note: "Medium Temperature Protection (81-200°C)",
+                systemNotes: []
+            },
+            "B2": {
+                sys: "B2", dft: "200", p: "SP-10",
+                l1: "Inorganic Zinc-Rich (75µm)", l2: "Epoxy Phenolic (125µm)", l3: "-",
+                col: "Gray", note: "CUI Protection (81-200°C)",
+                systemNotes: ["⚠️ CUI Problem - Temperature 81-200°C", "New painting system for CUI (Corrosion Under Insulation) concern", "To improve corrosion resistance against Corrosion Under Insulation (CUI) problem"]
+            },
+            "C": {
+                sys: "C", dft: "125", p: "SP-10",
+                l1: "Organic Zinc-Rich (75µm)", l2: "Silicone Alum (30µm)", l3: "Silicone Alum (20µm)",
+                col: "Aluminum", note: "High Temperature Protection (201-400°C)",
+                systemNotes: []
+            },
+            "C2": {
+                sys: "C2", dft: "90", p: "SP-10",
+                l1: "Silicone Primer (40µm)", l2: "Silicone Alum (25µm)", l3: "Silicone Alum (25µm)",
+                col: "Aluminum", note: "Very High Temperature Protection (401-500°C)",
+                systemNotes: ["Painting system for operating temperature = 401-500°C", "Due to painting material limitation"]
+            },
+            "D": {
+                sys: "D", dft: "375", p: "SP-10",
+                l1: "Organic Zinc-Rich (75µm)", l2: "HB Modified Epoxy (250µm)", l3: "Polyurethane (50µm)",
+                col: "Color per Section 7", note: "Heavy Duty Protection (0-120°C)",
+                systemNotes: ["Change painting material of painting system D from Epoxy Coal Tar to High build modified epoxy", "Epoxy Coal tar contains toxic material"]
+            },
+            "E": {
+                sys: "E", dft: "250", p: "SP-10",
+                l1: "High Temp Epoxy Phenolic (125µm)", l2: "High Temp Epoxy Phenolic (125µm)", l3: "-",
+                col: "Gray", note: "Extreme Temperature Protection (-196 to 650°C)",
+                systemNotes: ["Painting system for cyclic temperature", "Specify where painting system E will be used"]
+            },
+            "F": {
+                sys: "F", dft: "300", p: "SP-16",
+                l1: "Epoxy Phenolic (150µm)", l2: "Epoxy Phenolic (150µm)", l3: "-",
+                col: "Gray", note: "Stainless Steel Coating (-196 to 205°C)",
+                systemNotes: ["Painting system for all stainless steel equipment, structure and piping", "Specify where stainless steel shall be painted"]
+            },
+            "MFG": {
+                sys: "Manufacturer Standard", dft: "As specified", p: "Per Mfg",
+                l1: "Per manufacturer specification", l2: "-", l3: "-",
+                col: "Per Section 7", note: "As per manufacturer's standard",
+                systemNotes: []
+            }
+        };
+        // PDF Language Translations
+        const PDF_LANG = {
+            "en": {
+                company: "SCG CHEMICALS",
+                docTitle: "ENGINEERING SPECIFICATION CM-0010",
+                subtitle: "PAINTING SYSTEM SELECTION",
+                projectInfo: "PROJECT INFORMATION:",
+                projectName: "Project Name:",
+                date: "Date:",
+                equipment: "Equipment:",
+                designTemp: "Design Temperature:",
+                surfaceStatus: "Surface Status:",
+                applicationType: "Application Type:",
+                systemDetails: "PAINTING SYSTEM DETAILS:",
+                paintingSystem: "Painting System:",
+                totalDft: "Total DFT:",
+                surfacePrep: "Surface Preparation:",
+                systemDesc: "System Description:",
+                coatingLayers: "COATING LAYERS:",
+                firstCoat: "1st Coat (Primer):",
+                secondCoat: "2nd Coat (Intermediate):",
+                thirdCoat: "3rd Coat (Topcoat):",
+                color: "Color:",
+                colorCodes: "COLOR CODES (TABLE 7 - SECTION 7):",
+                applicationNotes: "APPLICATION NOTES",
+                insulated: "INSULATED",
+                nonInsulated: "NON-INSULATED",
+                surface: "SURFACE",
+                equipmentRemarks: "EQUIPMENT REMARKS:",
+                systemNotes: "SYSTEM NOTES & REMARKS:",
+                repairWork: "REPAIR WORK SPECIFICATIONS:",
+                equipmentProtection: "EQUIPMENT PROTECTION REQUIREMENTS:",
+                newConstruction: "NEW CONSTRUCTION",
+                repair: "REPAIR WORK",
+                footer: "SCG Chemicals - Engineering Specification CM-0010",
+                generated: "Generated on:",
+                page: "Page",
+                surfacePrepDetails: "SURFACE PREPARATION DETAILS:"
+            },
+            "th": {
+                company: "บริษัท เอสซีจี เคมิคัลส์ จำกัด (มหาชน)",
+                docTitle: "ข้อกำหนดทางวิศวกรรม CM-0010",
+                subtitle: "การเลือกระบบสีป้องกันการกัดกร่อน",
+                projectInfo: "ข้อมูลโครงการ:",
+                projectName: "ชื่อโครงการ:",
+                date: "วันที่:",
+                equipment: "อุปกรณ์:",
+                designTemp: "อุณหภูมิการออกแบบ:",
+                surfaceStatus: "สถานะพื้นผิว:",
+                applicationType: "ประเภทการใช้งาน:",
+                systemDetails: "รายละเอียดระบบสี:",
+                paintingSystem: "ระบบสี:",
+                totalDft: "ความหนารวม (DFT):",
+                surfacePrep: "การเตรียมผิว:",
+                systemDesc: "คำอธิบายระบบ:",
+                coatingLayers: "ชั้นการเคลือบ:",
+                firstCoat: "ชั้นที่ 1 (รองพื้น):",
+                secondCoat: "ชั้นที่ 2 (กลาง):",
+                thirdCoat: "ชั้นที่ 3 (หน้า):",
+                color: "สี:",
+                colorCodes: "รหัสสี (ตาราง 7 - ส่วนที่ 7):",
+                applicationNotes: "หมายเหตุการใช้งาน",
+                insulated: "มีฉนวน",
+                nonInsulated: "ไม่มีฉนวน",
+                surface: "พื้นผิว",
+                equipmentRemarks: "หมายเหตุอุปกรณ์:",
+                systemNotes: "หมายเหตุระบบและข้อสังเกต:",
+                repairWork: "ข้อกำหนดงานซ่อม:",
+                equipmentProtection: "ข้อกำหนดการป้องกันอุปกรณ์:",
+                newConstruction: "งานก่อสร้างใหม่",
+                repair: "งานซ่อม",
+                footer: "เอสซีจี เคมิคัลส์ - ข้อกำหนดทางวิศวกรรม CM-0010",
+                generated: "สร้างเมื่อ:",
+                page: "หน้า",
+                surfacePrepDetails: "รายละเอียดการเตรียมผิว:"
+            }
+        };
+
+        // PDF Page Management Constants - 2 ซม. = 20mm
+        const PDF_MARGIN_TOP = 20;       // Top margin: 2 ซม.
+        const PDF_MARGIN_BOTTOM = 20;    // Bottom margin: 2 ซม.
+        const PDF_PAGE_HEIGHT = 297;     // A4 height: 297mm
+        const PDF_USABLE_HEIGHT = PDF_PAGE_HEIGHT - PDF_MARGIN_TOP - PDF_MARGIN_BOTTOM; // 257mm usable area
+        const PDF_FOOTER_POSITION = PDF_PAGE_HEIGHT - PDF_MARGIN_BOTTOM; // Footer at 277mm
+        const PDF_PAGE_BREAK_THRESHOLD = PDF_MARGIN_TOP + PDF_USABLE_HEIGHT - 18; // Break at 259mm (ใช้พื้นที่ให้เต็มที่ เหลือ 18mm สำหรับ footer)
+
+        let state = { ins: "non", app: "new", pdfLang: "en" };
+
+        function checkPageBreak(doc, currentY, requiredSpace = 18) { // เพิ่มจาก 15 เป็น 18 เพื่อให้อ่านง่าย
+            if (currentY + requiredSpace > PDF_PAGE_BREAK_THRESHOLD) {
+                doc.addPage();
+                return PDF_MARGIN_TOP; // Reset to top margin
+            }
+            return currentY;
+        }
+
+        function addFooter(doc, pageNum) {
+            const lang = PDF_LANG[state.pdfLang];
+            doc.setLineWidth(0.5);
+            doc.line(20, PDF_FOOTER_POSITION - 7, 190, PDF_FOOTER_POSITION - 7);
+            doc.setFontSize(8);
+            doc.text(lang.footer, 20, PDF_FOOTER_POSITION - 2);
+            doc.text(`${lang.generated} ${new Date().toLocaleString()}`, 20, PDF_FOOTER_POSITION + 3);
+            doc.text('PED-CM-ES-0010', 190, PDF_FOOTER_POSITION - 2, { align: 'right' });
+            doc.text(`${lang.page} ${pageNum}`, 190, PDF_FOOTER_POSITION + 3, { align: 'right' });
+        }
+
+        function updateTemperatureOptions() {
+            const eqId = document.getElementById('eq_type').value;
+            const tempSel = document.getElementById('temp');
+            const allOptions = tempSel.querySelectorAll('option');
+            if (!eqId) {
+                allOptions.forEach(opt => {
+                    opt.className = '';
+                    opt.disabled = false;
+                });
+                return;
+            }
+            const availableTemps = EQ_MAP[eqId].temps;
+            allOptions.forEach(opt => {
+                const tempValue = opt.value;
+                if (availableTemps.includes(tempValue)) {
+                    opt.className = 'temp-available';
+                    opt.disabled = false;
+                    if (!opt.textContent.includes('✅')) {
+                        opt.textContent = '✅ ' + opt.textContent.replace('❌ ', '');
+                    }
+                } else {
+                    opt.className = 'temp-unavailable';
+                    opt.disabled = false;
+                    if (!opt.textContent.includes('❌')) {
+                        opt.textContent = '❌ ' + opt.textContent.replace('✅ ', '');
+                    }
+                }
+            });
+            if (availableTemps.length > 0 && !availableTemps.includes(tempSel.value)) {
+                tempSel.value = availableTemps[0];
+            }
+            update();
+        }
+        function update() {
+            const eqId = document.getElementById('eq_type').value;
+            const tempVal = document.getElementById('temp').value;
+            const projectName = document.getElementById('project').value;
+            if (!eqId || !tempVal || !projectName) {
+                document.getElementById('preview').innerHTML = `
+                    <div style="text-align: center; color: #999; padding: 50px;">
+                        Please select equipment type, temperature range, and fill project name
+                    </div>
+                `;
+                document.getElementById('btn').disabled = true;
+                return;
+            }
+            // Logic to determine System
+            let sysKey = "A";
+            if (tempVal === "81-200") sysKey = (state.ins === "ins") ? "B2" : "B";
+            else if (tempVal === "201-400") sysKey = "C";
+            else if (tempVal === "401-500") sysKey = "C2";
+            else if (["0-120", "Special"].includes(tempVal) || ["7","11","12","13","14","15","19"].includes(eqId)) sysKey = "D";
+            else if (eqId === "20" || tempVal === "-196-650") sysKey = "E";
+            else if (eqId === "21" || tempVal === "-196-205") sysKey = "F";
+            else if (["8","9"].includes(eqId) && ["0-500"].includes(tempVal)) sysKey = "MFG";
+            const sys = SYS_DATA[sysKey];
+            const equipment = EQ_MAP[eqId];
+            const appLabel = state.app === "new" ? "NEW CONSTRUCTION" : "REPAIR WORK";
+            const prep = state.app === "new" ? sys.p : "SP-3";
+            // Get specific notes for this equipment
+            const noteType = state.ins === "ins" ? "insulated" : "non-insulated";
+            const equipmentNotes = equipment.notesRef.map(noteId => NOTES[noteType][noteId]).filter(Boolean);
+            // Get remarks for this equipment
+            const equipmentRemarks = equipment.remarksRef.map(remarkId => REMARKS[remarkId]).filter(Boolean);
+            // Get color codes from Table 7
+            const colorCodes = COLOR_CODES[equipment.colorRef] || [];
+            // Generate SP Code explanation
+            const spCodes = state.app === "new" ? [sys.p] : ["SP-3", "SP-2"];
+            const spExplanationHtml = `
+                <div class="spec-box sp-code-box">
+                    <div class="box-title">🔧 Surface Preparation Details (SP Codes)</div>
+                    ${spCodes.map(code => `
+                        <div class="item-row">
+                            <strong>${code}:</strong> ${SP_CODES[code] || 'Standard surface preparation method'}
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+            // Generate sections
+            const colorsHtml = colorCodes.length > 0 ? `
+                <div class="spec-box color-box">
+                    <div class="box-title">🎨 Color Codes (Table 7 - Section 7)</div>
+                    ${colorCodes.map(colorItem => `
+                        <div class="item-row">
+                            <span class="color-swatch" style="background-color: ${colorItem.swatch};"></span>
+                            <strong>${colorItem.item}:</strong> ${colorItem.color}
+                        </div>
+                    `).join('')}
+                </div>
+            ` : '';
+            const applicationNotesHtml = equipmentNotes.length > 0 ? `
+                <div class="spec-box info-note">
+                    <div class="box-title">📋 Application Notes (${state.ins === 'ins' ? 'Insulated' : 'Non-Insulated'} Surface)</div>
+                    ${equipmentNotes.map((note, idx) => `<div class="item-row">${equipment.notesRef[idx]}. ${note}</div>`).join('')}
+                </div>
+            ` : '';
+            const remarksHtml = equipmentRemarks.length > 0 ? `
+                <div class="spec-box note-box">
+                    <div class="box-title">📝 Equipment Remarks</div>
+                    ${equipmentRemarks.map(remark => `<div class="item-row">• ${remark}</div>`).join('')}
+                </div>
+            ` : '';
+            const systemNotesHtml = sys.systemNotes && sys.systemNotes.length > 0 ? `
+                <div class="spec-box ${sys.systemNotes.some(n => n.includes('⚠️')) ? 'critical-note' : 'note-box'}">
+                    <div class="box-title">${sys.systemNotes.some(n => n.includes('⚠️')) ? '⚠️' : '📝'} System Notes & Remarks</div>
+                    ${sys.systemNotes.map(note => `<div class="item-row">• ${note}</div>`).join('')}
+                </div>
+            ` : '';
+            // Replace "Color per Section 7" with actual color info
+            let systemColor = sys.col;
+            if (sys.col === "Color per Section 7" || sys.col === "Per Section 7") {
+                systemColor = `As per Table 7 (${colorCodes.length > 0 ? colorCodes[0].color : 'See color section above'})`;
+            }
+            document.getElementById('preview').innerHTML = `
+                <div class="preview-header">
+                    <h2>Engineering Specification CM-0010</h2>
+                    <p>PAINTING SYSTEM SELECTION</p>
+                </div>
+                <div class="row">
+                    <div class="col"><span class="label">Project:</span><span class="value">${projectName}</span></div>
+                    <div class="col"><span class="label">Date:</span><span class="value">${new Date().toLocaleDateString()}</span></div>
+                </div>
+                <div class="row">
+                    <div class="col" style="grid-column: 1 / -1;"><span class="label">Equipment:</span><span class="value">${equipment.name}</span></div>
+                </div>
+                <div class="row">
+                    <div class="col"><span class="label">Design Temp:</span><span class="value">${tempVal} °C</span></div>
+                    <div class="col"><span class="label">Insulation:</span><span class="value">${state.ins === 'ins' ? 'Insulated' : 'Non-Insulated'}</span></div>
+                </div>
+                <div class="row">
+                    <div class="col"><span class="label">Application:</span><span class="value"><span class="badge ${state.app === 'new' ? 'badge-new' : 'badge-repair'}">${appLabel}</span></span></div>
+                    <div class="col"><span class="label">System:</span><span class="value">SYSTEM ${sys.sys}</span></div>
+                </div>
+                <div class="row">
+                    <div class="col"><span class="label">Total DFT:</span><span class="value">${sys.dft} µm</span></div>
+                    <div class="col"><span class="label">Surface Prep:</span><span class="value">${prep}</span></div>
+                </div>
+                ${spExplanationHtml}
+                ${colorsHtml}
+                ${applicationNotesHtml}
+                ${remarksHtml}
+                ${systemNotesHtml}
+                <div class="spec-box">
+                    <div class="box-title">Layer Details - ${sys.note}</div>
+                    <div class="item-row"><strong>1st Coat (Primer):</strong> ${sys.l1}</div>
+                    <div class="item-row"><strong>2nd Coat (Intermediate):</strong> ${sys.l2}</div>
+                    ${sys.l3 !== '-' ? `<div class="item-row"><strong>3rd Coat (Topcoat):</strong> ${sys.l3}</div>` : ''}
+                    <div class="item-row"><strong>Color:</strong> ${systemColor}</div>
+                </div>
+                ${state.app === 'repair' ? `
+                <div class="spec-box critical-note">
+                    <div class="box-title">🔧 Repair Work Specifications</div>
+                    <div class="item-row">Surface Preparation: SP-3 or SP-2 (Power/Hand Tool cleaning)</div>
+                    <div class="item-row">Spot clean damaged areas before applying finish coat</div>
+                    <div class="item-row">Field welding seams require same repair procedure</div>
+                </div>
+                ` : ''}
+                <div class="spec-box">
+                    <div class="box-title">🛡️ Equipment Protection Requirements</div>
+                    <p>Shield nameplates, packing glands, seals, bearings, rotating equipment couplings, shafts, lubrication fittings, pressure gauges, gauge glasses, motor starters, instrument dials, vents, exposed linkages, valve stems, light bulbs and enclosures, air intakes, rubber parts and plastic. Remove all protective materials after painting completion.</p>
+                </div>
+            `;
+            document.getElementById('btn').disabled = false;
+        }
+        // Radio button handling
+        document.querySelectorAll('.radio-option').forEach(opt => {
+            opt.addEventListener('click', function() {
+                const grp = this.dataset.grp;
+                document.querySelectorAll(`.radio-option[data-grp="${grp}"]`).forEach(r => r.classList.remove('selected'));
+                this.classList.add('selected');
+                state[grp] = this.dataset.val;
+                update();
+            });
+        });
+        // PDF Language Selection
+        document.querySelectorAll('.lang-option').forEach(opt => {
+            opt.addEventListener('click', function() {
+                document.querySelectorAll('.lang-option').forEach(r => r.classList.remove('selected'));
+                this.classList.add('selected');
+                state.pdfLang = this.dataset.lang;
+            });
+        });
+        // Set defaults
+        document.querySelector('.radio-option[data-val="non"]').classList.add('selected');
+        document.querySelector('.radio-option[data-val="new"]').classList.add('selected');
+        function generatePDFContent() {
+            const projectName = document.getElementById('project').value;
+            const eqId = document.getElementById('eq_type').value;
+            const tempVal = document.getElementById('temp').value;
+            let sysKey = "A";
+            if (tempVal === "81-200") sysKey = (state.ins === "ins") ? "B2" : "B";
+            else if (tempVal === "201-400") sysKey = "C";
+            else if (tempVal === "401-500") sysKey = "C2";
+            else if (["0-120", "Special"].includes(tempVal) || ["7","11","12","13","14","15","19"].includes(eqId)) sysKey = "D";
+            else if (eqId === "20" || tempVal === "-196-650") sysKey = "E";
+            else if (eqId === "21" || tempVal === "-196-205") sysKey = "F";
+            else if (["8","9"].includes(eqId) && ["0-500"].includes(tempVal)) sysKey = "MFG";
+            const sys = SYS_DATA[sysKey];
+            const equipment = EQ_MAP[eqId];
+            const lang = PDF_LANG[state.pdfLang];
+            const appLabel = state.app === "new" ? lang.newConstruction : lang.repair;
+            const prep = state.app === "new" ? sys.p : "SP-3";
+            const noteType = state.ins === "ins" ? "insulated" : "non-insulated";
+            const equipmentNotes = equipment.notesRef.map(noteId => NOTES[noteType][noteId]).filter(Boolean);
+            const equipmentRemarks = equipment.remarksRef.map(remarkId => REMARKS[remarkId]).filter(Boolean);
+            const colorCodes = COLOR_CODES[equipment.colorRef] || [];
+            const spCodes = state.app === "new" ? [sys.p] : ["SP-3", "SP-2"];
+            let systemColor = sys.col;
+            if (sys.col === "Color per Section 7" || sys.col === "Per Section 7") {
+                systemColor = `As per Table 7 (${colorCodes.length > 0 ? colorCodes[0].color : 'See color specification'})`;
+            }
+            return `
+                <h1>${lang.company}</h1>
+                <h2>${lang.docTitle}</h2>
+                <h2>${lang.subtitle}</h2>
+                <div class="section">
+                    <h3>${lang.projectInfo}</h3>
+                    <p>${lang.projectName} ${projectName}</p>
+                    <p>${lang.date} ${new Date().toLocaleDateString()}</p>
+                    <p>${lang.equipment} ${equipment.name}</p>
+                    <p>${lang.designTemp} ${tempVal}°C</p>
+                    <p>${lang.surfaceStatus} ${state.ins === 'ins' ? lang.insulated : lang.nonInsulated}</p>
+                    <p>${lang.applicationType} ${appLabel}</p>
+                </div>
+                <div class="section">
+                    <h3>${lang.systemDetails}</h3>
+                    <p>${lang.paintingSystem} SYSTEM ${sys.sys}</p>
+                    <p>${lang.totalDft} ${sys.dft} µm</p>
+                    <p>${lang.surfacePrep} ${prep}</p>
+                    <p>${lang.systemDesc} ${sys.note}</p>
+                </div>
+                <div class="section">
+                    <h3>${lang.surfacePrepDetails}</h3>
+                    ${spCodes.map(code => `<p><strong>${code}:</strong> ${SP_CODES[code] || 'Standard surface preparation method'}</p>`).join('')}
+                </div>
+                <div class="section">
+                    <h3>${lang.coatingLayers}</h3>
+                    <p>${lang.firstCoat} ${sys.l1}</p>
+                    <p>${lang.secondCoat} ${sys.l2}</p>
+                    ${sys.l3 !== '-' ? `<p>${lang.thirdCoat} ${sys.l3}</p>` : ''}
+                    <p>${lang.color} ${systemColor}</p>
+                </div>
+                ${colorCodes.length > 0 ? `
+                <div class="section">
+                    <h3>${lang.colorCodes}</h3>
+                    ${colorCodes.map(colorItem => `<p>• ${colorItem.item}: ${colorItem.color}</p>`).join('')}
+                </div>
+                ` : ''}
+                ${equipmentNotes.length > 0 ? `
+                <div class="section">
+                    <h3>${lang.applicationNotes} (${state.ins === 'ins' ? lang.insulated : lang.nonInsulated} ${lang.surface}):</h3>
+                    ${equipmentNotes.map((note, idx) => `<p>${equipment.notesRef[idx]}. ${note}</p>`).join('')}
+                </div>
+                ` : ''}
+                ${equipmentRemarks.length > 0 ? `
+                <div class="section">
+                    <h3>${lang.equipmentRemarks}</h3>
+                    ${equipmentRemarks.map(remark => `<p>• ${remark}</p>`).join('')}
+                </div>
+                ` : ''}
+                ${sys.systemNotes && sys.systemNotes.length > 0 ? `
+                <div class="section">
+                    <h3>${lang.systemNotes}</h3>
+                    ${sys.systemNotes.map(note => `<p>• ${note.replace('⚠️ ', '')}</p>`).join('')}
+                </div>
+                ` : ''}
+                ${state.app === 'repair' ? `
+                <div class="section">
+                    <h3>${lang.repairWork}</h3>
+                    <p>• Surface Preparation: SP-3 or SP-2 (Power/Hand Tool cleaning)</p>
+                    <p>• Spot clean damaged areas before applying finish coat</p>
+                    <p>• Field welding seams require same repair procedure</p>
+                </div>
+                ` : ''}
+                <div class="section">
+                    <h3>${lang.equipmentProtection}</h3>
+                    <p>Shield nameplates, packing glands, seals, bearings, rotating equipment couplings, shafts, lubrication fittings, pressure gauges, gauge glasses, motor starters, instrument dials, vents, exposed linkages, valve stems, light bulbs and enclosures, air intakes, rubber parts and plastic. Remove all protective materials after painting completion.</p>
+                </div>
+            `;
+        }
+        async function printPDF() {
+            const projectName = document.getElementById('project').value;
+            const pdfContent = document.getElementById('pdf-content');
+            // Generate content in hidden div with proper fonts
+            pdfContent.innerHTML = generatePDFContent();
+            // Move to visible area temporarily for html2canvas
+            pdfContent.style.left = '0px';
+            pdfContent.style.position = 'relative';
+            if (state.pdfLang === 'th') {
+                // Use html2canvas for Thai text support with proper margin handling
+                const canvas = await html2canvas(pdfContent, {
+                    width: 794,  // A4 width in pixels (210mm @ 96dpi)
+                    height: 1123, // A4 height in pixels (297mm @ 96dpi)
+                    scale: 2,
+                    useCORS: true,
+                    allowTaint: true
+                });
+                const imgData = canvas.toDataURL('image/png');
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF('p', 'mm', 'a4');
+                const imgWidth = 210; // A4 width in mm
+                const imgHeight = (canvas.height * imgWidth) / canvas.width;
+                
+                // Add image to PDF (already has proper 20mm margins from CSS)
+                doc.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+                
+                // Save Thai PDF
+                const langSuffix = '_TH';
+                doc.save(`SCG_Painting_Specification_${projectName.replace(/[^a-zA-Z0-9]/g, '_')}_${new Date().toISOString().split('T')[0]}${langSuffix}.pdf`);
+            } else {
+                // Use regular jsPDF for English with balanced font size and spacing
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF('p', 'mm', 'a4');
+                
+                // Get current data for English PDF generation
+                const eqId = document.getElementById('eq_type').value;
+                const tempVal = document.getElementById('temp').value;
+                let sysKey = "A";
+                if (tempVal === "81-200") sysKey = (state.ins === "ins") ? "B2" : "B";
+                else if (tempVal === "201-400") sysKey = "C";
+                else if (tempVal === "401-500") sysKey = "C2";
+                else if (["0-120", "Special"].includes(tempVal) || ["7","11","12","13","14","15","19"].includes(eqId)) sysKey = "D";
+                else if (eqId === "20" || tempVal === "-196-650") sysKey = "E";
+                else if (eqId === "21" || tempVal === "-196-205") sysKey = "F";
+                else if (["8","9"].includes(eqId) && ["0-500"].includes(tempVal)) sysKey = "MFG";
+                const sys = SYS_DATA[sysKey];
+                const equipment = EQ_MAP[eqId];
+                const lang = PDF_LANG[state.pdfLang];
+                const appLabel = state.app === "new" ? lang.newConstruction : lang.repair;
+                const prep = state.app === "new" ? sys.p : "SP-3";
+                const noteType = state.ins === "ins" ? "insulated" : "non-insulated";
+                const equipmentNotes = equipment.notesRef.map(noteId => NOTES[noteType][noteId]).filter(Boolean);
+                const equipmentRemarks = equipment.remarksRef.map(remarkId => REMARKS[remarkId]).filter(Boolean);
+                const colorCodes = COLOR_CODES[equipment.colorRef] || [];
+                const spCodes = state.app === "new" ? [sys.p] : ["SP-3", "SP-2"];
+
+                let y = PDF_MARGIN_TOP; // Start at top margin (20mm)
+                let pageNum = 1;
+
+                // Header
+                doc.setFontSize(18);
+                doc.setFont(undefined, 'bold');
+                doc.text(lang.company, 105, y, { align: 'center' });
+                y += 8;
+                doc.text(lang.docTitle, 105, y, { align: 'center' });
+                y += 6;
+                doc.setFontSize(14);
+                doc.text(lang.subtitle, 105, y, { align: 'center' });
+                y += 15;
+                // Draw line
+                doc.setLineWidth(0.5);
+                doc.line(20, y, 190, y);
+                y += 10;
+
+                // Project Details - ปรับขนาดตัวอักษรกลับเป็นขนาดปกติ
+                y = checkPageBreak(doc, y, 55);
+                if (y === PDF_MARGIN_TOP) { 
+                    addFooter(doc, pageNum++); 
+                }
+                
+                doc.setFontSize(11); // เพิ่มจาก 10 เป็น 11
+                doc.setFont(undefined, 'bold');
+                doc.text(lang.projectInfo, 20, y);
+                y += 7; // เพิ่มจาก 6 เป็น 7
+                doc.setFont(undefined, 'normal');
+                doc.text(`${lang.projectName} ${projectName}`, 25, y);
+                y += 6; // เพิ่มจาก 5 เป็น 6
+                doc.text(`${lang.date} ${new Date().toLocaleDateString()}`, 25, y);
+                y += 6;
+                doc.text(`${lang.equipment} ${equipment.name}`, 25, y);
+                y += 6;
+                doc.text(`${lang.designTemp} ${tempVal}°C`, 25, y);
+                y += 6;
+                doc.text(`${lang.surfaceStatus} ${state.ins === 'ins' ? lang.insulated : lang.nonInsulated}`, 25, y);
+                y += 6;
+                doc.text(`${lang.applicationType} ${appLabel}`, 25, y);
+                y += 13; // เพิ่มจาก 12 เป็น 13
+
+                // System Details
+                y = checkPageBreak(doc, y, 40);
+                if (y === PDF_MARGIN_TOP) { 
+                    addFooter(doc, pageNum++); 
+                }
+                
+                doc.setFont(undefined, 'bold');
+                doc.text(lang.systemDetails, 20, y);
+                y += 7;
+                doc.setFont(undefined, 'normal');
+                doc.text(`${lang.paintingSystem} SYSTEM ${sys.sys}`, 25, y);
+                y += 6;
+                doc.text(`${lang.totalDft} ${sys.dft} µm`, 25, y);
+                y += 6;
+                doc.text(`${lang.surfacePrep} ${prep}`, 25, y);
+                y += 6;
+                doc.text(`${lang.systemDesc} ${sys.note}`, 25, y);
+                y += 13;
+
+                // Surface Preparation Details
+                const totalSpHeight = spCodes.length * 15; // เพิ่มจาก 12 เป็น 15
+                y = checkPageBreak(doc, y, totalSpHeight);
+                if (y === PDF_MARGIN_TOP) { 
+                    addFooter(doc, pageNum++); 
+                }
+                
+                doc.setFont(undefined, 'bold');
+                doc.text(lang.surfacePrepDetails, 20, y);
+                y += 7;
+                doc.setFont(undefined, 'normal');
+                spCodes.forEach(code => {
+                    const spDesc = SP_CODES[code] || 'Standard surface preparation method';
+                    const splitDesc = doc.splitTextToSize(`${code}: ${spDesc}`, 160);
+                    
+                    // Check if this SP code description fits on current page
+                    const spDescHeight = splitDesc.length * 5; // เพิ่มจาก 4 เป็น 5
+                    y = checkPageBreak(doc, y, spDescHeight);
+                    if (y === PDF_MARGIN_TOP) { 
+                        addFooter(doc, pageNum++); 
+                    }
+                    
+                    doc.text(splitDesc, 25, y);
+                    y += spDescHeight;
+                });
+                y += 10; // เพิ่มจาก 8 เป็น 10
+
+                // Layer Details
+                y = checkPageBreak(doc, y, 35);
+                if (y === PDF_MARGIN_TOP) { 
+                    addFooter(doc, pageNum++); 
+                }
+                
+                doc.setFont(undefined, 'bold');
+                doc.text(lang.coatingLayers, 20, y);
+                y += 7;
+                doc.setFont(undefined, 'normal');
+                doc.text(`${lang.firstCoat} ${sys.l1}`, 25, y);
+                y += 6;
+                doc.text(`${lang.secondCoat} ${sys.l2}`, 25, y);
+                y += 6;
+                if (sys.l3 !== '-') {
+                    doc.text(`${lang.thirdCoat} ${sys.l3}`, 25, y);
+                    y += 6;
+                }
+                let systemColor = sys.col;
+                if (sys.col === "Color per Section 7" || sys.col === "Per Section 7") {
+                    systemColor = `As per Table 7 (${colorCodes.length > 0 ? colorCodes[0].color : 'See color specification'})`;
+                }
+                doc.text(`${lang.color} ${systemColor}`, 25, y);
+                y += 13;
+
+                // Color Codes
+                if (colorCodes.length > 0) {
+                    const colorHeight = colorCodes.length * 6 + 17; // เพิ่มจาก 5*15 เป็น 6*17
+                    y = checkPageBreak(doc, y, colorHeight);
+                    if (y === PDF_MARGIN_TOP) { 
+                        addFooter(doc, pageNum++); 
+                    }
+                    
+                    doc.setFont(undefined, 'bold');
+                    doc.text(lang.colorCodes, 20, y);
+                    y += 7;
+                    doc.setFont(undefined, 'normal');
+                    colorCodes.forEach(colorItem => {
+                        doc.text(`• ${colorItem.item}: ${colorItem.color}`, 25, y);
+                        y += 6; // เพิ่มจาก 5 เป็น 6
+                    });
+                    y += 10;
+                }
+
+                // Application Notes
+                if (equipmentNotes.length > 0) {
+                    let totalNotesHeight = 17; // เพิ่มจาก 15 เป็น 17
+                    equipmentNotes.forEach((note, idx) => {
+                        const noteText = `${equipment.notesRef[idx]}. ${note}`;
+                        const splitNote = doc.splitTextToSize(noteText, 160);
+                        totalNotesHeight += splitNote.length * 5; // เพิ่มจาก 4 เป็น 5
+                    });
+                    
+                    y = checkPageBreak(doc, y, totalNotesHeight);
+                    if (y === PDF_MARGIN_TOP) { 
+                        addFooter(doc, pageNum++); 
+                    }
+                    
+                    doc.setFont(undefined, 'bold');
+                    const surfaceText = state.ins === 'ins' ? lang.insulated : lang.nonInsulated;
+                    doc.text(`${lang.applicationNotes} (${surfaceText} ${lang.surface}):`, 20, y);
+                    y += 7;
+                    doc.setFont(undefined, 'normal');
+                    equipmentNotes.forEach((note, idx) => {
+                        const noteText = `${equipment.notesRef[idx]}. ${note}`;
+                        const splitNote = doc.splitTextToSize(noteText, 160);
+                        doc.text(splitNote, 25, y);
+                        y += splitNote.length * 5;
+                    });
+                    y += 10;
+                }
+
+                // Equipment Remarks
+                if (equipmentRemarks.length > 0) {
+                    let totalRemarksHeight = 17;
+                    equipmentRemarks.forEach(remark => {
+                        const splitRemark = doc.splitTextToSize(`• ${remark}`, 160);
+                        totalRemarksHeight += splitRemark.length * 5;
+                    });
+                    
+                    y = checkPageBreak(doc, y, totalRemarksHeight);
+                    if (y === PDF_MARGIN_TOP) { 
+                        addFooter(doc, pageNum++); 
+                    }
+                    
+                    doc.setFont(undefined, 'bold');
+                    doc.text(lang.equipmentRemarks, 20, y);
+                    y += 7;
+                    doc.setFont(undefined, 'normal');
+                    equipmentRemarks.forEach(remark => {
+                        const splitRemark = doc.splitTextToSize(`• ${remark}`, 160);
+                        doc.text(splitRemark, 25, y);
+                        y += splitRemark.length * 5;
+                    });
+                    y += 10;
+                }
+
+                // System Notes
+                if (sys.systemNotes && sys.systemNotes.length > 0) {
+                    let totalSystemNotesHeight = 17;
+                    sys.systemNotes.forEach(note => {
+                        const cleanNote = note.replace('⚠️ ', '');
+                        const splitNote = doc.splitTextToSize(`• ${cleanNote}`, 160);
+                        totalSystemNotesHeight += splitNote.length * 5;
+                    });
+                    
+                    y = checkPageBreak(doc, y, totalSystemNotesHeight);
+                    if (y === PDF_MARGIN_TOP) { 
+                        addFooter(doc, pageNum++); 
+                    }
+                    
+                    doc.setFont(undefined, 'bold');
+                    doc.text(lang.systemNotes, 20, y);
+                    y += 7;
+                    doc.setFont(undefined, 'normal');
+                    sys.systemNotes.forEach(note => {
+                        const cleanNote = note.replace('⚠️ ', '');
+                        const splitNote = doc.splitTextToSize(`• ${cleanNote}`, 160);
+                        doc.text(splitNote, 25, y);
+                        y += splitNote.length * 5;
+                    });
+                    y += 10;
+                }
+
+                // Repair Work Specifications
+                if (state.app === 'repair') {
+                    y = checkPageBreak(doc, y, 35);
+                    if (y === PDF_MARGIN_TOP) { 
+                        addFooter(doc, pageNum++); 
+                    }
+                    
+                    doc.setFont(undefined, 'bold');
+                    doc.text(lang.repairWork, 20, y);
+                    y += 7;
+                    doc.setFont(undefined, 'normal');
+                    doc.text('• Surface Preparation: SP-3 or SP-2 (Power/Hand Tool cleaning)', 25, y);
+                    y += 6;
+                    doc.text('• Spot clean damaged areas before applying finish coat', 25, y);
+                    y += 6;
+                    doc.text('• Field welding seams require same repair procedure', 25, y);
+                    y += 13;
+                }
+
+                // Equipment Protection - Calculate required space for this section
+                const protectionText = 'Shield nameplates, packing glands, seals, bearings, rotating equipment couplings, shafts, lubrication fittings, pressure gauges, gauge glasses, motor starters, instrument dials, vents, exposed linkages, valve stems, light bulbs and enclosures, air intakes, rubber parts and plastic. Remove all protective materials after painting completion.';
+                const splitProtection = doc.splitTextToSize(protectionText, 160);
+                const protectionHeight = 17 + splitProtection.length * 5; // เพิ่มจาก 15+4 เป็น 17+5
+                
+                y = checkPageBreak(doc, y, protectionHeight);
+                if (y === PDF_MARGIN_TOP) { 
+                    addFooter(doc, pageNum++); 
+                }
+                
+                doc.setFont(undefined, 'bold');
+                doc.text(lang.equipmentProtection, 20, y);
+                y += 7;
+                doc.setFont(undefined, 'normal');
+                doc.text(splitProtection, 25, y);
+                y += splitProtection.length * 5 + 13;
+
+                // Add footer to final page
+                addFooter(doc, pageNum);
+
+                // Save English PDF
+                const langSuffix = '_EN';
+                doc.save(`SCG_Painting_Specification_${projectName.replace(/[^a-zA-Z0-9]/g, '_')}_${new Date().toISOString().split('T')[0]}${langSuffix}.pdf`);
+            }
+            // Hide content again
+            pdfContent.style.left = '-9999px';
+            pdfContent.style.position = 'absolute';
+        }
+        // Initialize
+        updateTemperatureOptions();
+    </script>
+</body>
+</html>
+
+							<script>
+                            	
+							</script>
+                        </body>
+                        </html>
+                    
